@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
+
+import { TransactionsContext } from "../../contexts/TransactionsContext";
 
 import { PriceHighlight, TransactionsContainer, TransactionsTable } from "./styles";
 
@@ -6,31 +8,9 @@ import { Header } from "../../components/Header";
 import { Summary } from "../../components/Summary";
 import { SearchForm } from "./components/SearchForm";
 
-interface Transaction {
-  id: number,
-  description: string,
-  type: 'income' | 'outcome',
-  price: number,
-  category: string,
-  createdAt: string,
-}
-
 export function Transactions() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-  async function loadTransactions() {
-    const response = await fetch('http://localhost:3000/transactions')
-    const data = await response.json()
-
-    setTransactions(data)
-  }
-
-  useEffect(() => {
-    /*fetch('http://localhost:3000/transactions')
-      .then(response => response.json())
-      .then(data => console.log(data))*/
-    loadTransactions()
-  }, [])
+  /* 6. Através do 'useContext' acessamos o contexto e temos acesso a suas informações */
+  const { transactions } = useContext(TransactionsContext);
 
   return (
     <div>
