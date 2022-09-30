@@ -1,29 +1,33 @@
-import { useContext } from "react";
+import { useContext } from 'react'
 
-import { TransactionsContext } from "../../contexts/TransactionsContext";
+import { TransactionsContext } from '../../contexts/TransactionsContext'
 
-import { dateFormatter, priceFormatter } from "../../utils/formatter";
+import { dateFormatter, priceFormatter } from '../../utils/formatter'
 
-import { PriceHighlight, TransactionsContainer, TransactionsTable } from "./styles";
+import {
+  PriceHighlight,
+  TransactionsContainer,
+  TransactionsTable,
+} from './styles'
 
-import { Header } from "../../components/Header";
-import { Summary } from "../../components/Summary";
-import { SearchForm } from "./components/SearchForm";
+import { Header } from '../../components/Header'
+import { Summary } from '../../components/Summary'
+import { SearchForm } from './components/SearchForm'
 
 export function Transactions() {
   /* 6. Através do 'useContext' acessamos o contexto e temos acesso a suas informações */
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions } = useContext(TransactionsContext)
 
   return (
     <div>
       <Header />
       <Summary />
-      
+
       <TransactionsContainer>
         <SearchForm />
         <TransactionsTable>
           <tbody>
-            {transactions.map(transaction => (
+            {transactions.map((transaction) => (
               <tr key={transaction.id}>
                 <td width="50%">{transaction.description}</td>
                 <td>

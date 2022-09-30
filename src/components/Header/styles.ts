@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const HeaderContainer = styled.header`
-  background: ${({ theme }) => theme["gray-900"]};
+  background: ${({ theme }) => theme['gray-900']};
   padding: 2.5rem 0 7.5rem;
 `
 
@@ -19,7 +19,7 @@ export const HeaderContent = styled.div`
 export const NewTransactionButton = styled.button`
   height: 50px;
   border: 0;
-  background: ${({ theme }) => theme["green-500"]};
+  background: ${({ theme }) => theme['green-500']};
   color: ${({ theme }) => theme.white};
   font-weight: bold;
   padding: 0 1.25rem;
@@ -28,7 +28,7 @@ export const NewTransactionButton = styled.button`
   /* transition: background-color 0.2s; Quando o mouse fica em cima e também quando sai */
 
   &:hover {
-    background: ${({ theme }) => theme["green-700"]};
+    background: ${({ theme }) => theme['green-700']};
     transition: background-color 0.2s; /* Apenas quando o mouse fica em cima */
   }
 `

@@ -1,58 +1,63 @@
-import { useContext } from 'react';
+import { useContext } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react'
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as zod from 'zod';
+import { Controller, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as zod from 'zod'
 
-import { TransactionsContext } from '../../contexts/TransactionsContext';
+import { TransactionsContext } from '../../contexts/TransactionsContext'
 
-import { CloseButton, Content, Overlay, TransactionType, TransactionTypeButton } from './styles'
+import {
+  CloseButton,
+  Content,
+  Overlay,
+  TransactionType,
+  TransactionTypeButton,
+} from './styles'
 
 const NewTransactionFormSchema = zod.object({
   description: zod.string(),
   price: zod.number(),
   category: zod.string(),
   type: zod.enum(['income', 'outcome']),
-});
+})
 
-type NewTransactionFormInputs = zod.infer<typeof NewTransactionFormSchema>;
+type NewTransactionFormInputs = zod.infer<typeof NewTransactionFormSchema>
 
 export function NewTransactionModal() {
-  const { createTransaction } = useContext(TransactionsContext);
+  const { createTransaction } = useContext(TransactionsContext)
 
   const {
-    control, /* Nos permite pegar a informação de elementos de formulários não nativos do html. Usado no 'Controller' do React Hook Form */
+    control /* Nos permite pegar a informação de elementos de formulários não nativos do html. Usado no 'Controller' do React Hook Form */,
     register,
     handleSubmit,
-    formState: {
-      isSubmitting,
-    },
-    reset, /* Resetar o formulário */
+    formState: { isSubmitting },
+    reset /* Resetar o formulário */,
   } = useForm<NewTransactionFormInputs>({
     resolver: zodResolver(NewTransactionFormSchema),
     defaultValues: {
       type: 'income',
-    }
-  });
+    },
+  })
 
   async function handleCreateNewTransaction(data: NewTransactionFormInputs) {
     /* await new Promise(resolve => setTimeout(resolve, 2000));
     console.log(data); */
-    const { description, category, price, type } = data;
+    const { description, category, price, type } = data
 
     await createTransaction({
       description,
       category,
       price,
       type,
-    });
-    
-    reset();
+    })
+
+    reset()
   }
 
   return (
-    <Dialog.Portal>{/* Abstrai uma funcionalidade do React - 'Portal' que nos permite renderizar um nó filho dentro de um outro local da DOM sem obedecer a hierarquia dos elementos (fora de qualquer div, por exemplo, seja ela do Header ou de outro componente, sendo algo à parte de nossa aplicação.) */}
+    <Dialog.Portal>
+      {/* Abstrai uma funcionalidade do React - 'Portal' que nos permite renderizar um nó filho dentro de um outro local da DOM sem obedecer a hierarquia dos elementos (fora de qualquer div, por exemplo, seja ela do Header ou de outro componente, sendo algo à parte de nossa aplicação.) */}
       <Overlay />
 
       <Content>
@@ -68,21 +73,21 @@ export function NewTransactionModal() {
             type="text"
             placeholder="Descrição"
             required
-            { ...register('description') }
+            {...register('description')}
           />
 
           <input
             type="number"
             placeholder="Preço"
             required
-            { ...register('price', { valueAsNumber: true }) }
+            {...register('price', { valueAsNumber: true })}
           />
 
           <input
             type="text"
             placeholder="Categoria"
             required
-            { ...register('category') }
+            {...register('category')}
           />
 
           {/*
@@ -100,11 +105,11 @@ export function NewTransactionModal() {
                 onValueChange={field.onChange}
                 value={field.value}
               >
-                <TransactionTypeButton variant='income' value='income'>
+                <TransactionTypeButton variant="income" value="income">
                   <ArrowCircleUp size={24} />
                   Entrada
                 </TransactionTypeButton>
-                <TransactionTypeButton variant='outcome' value='outcome'>
+                <TransactionTypeButton variant="outcome" value="outcome">
                   <ArrowCircleDown size={24} />
                   Saída
                 </TransactionTypeButton>
