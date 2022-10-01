@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { createContext } from 'use-context-selector'
 import { api } from '../lib/axios'
 
@@ -41,7 +41,10 @@ interface TransactionsProviderProps {
 export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
 
-  async function fetchTransactions(query?: string) {
+  /*
+    Mesma modificação da função 'createTransaction' com useCallback.
+  */
+  const fetchTransactions = useCallback(async (query?: string) => {
     const response = await api.get('transactions', {
       params: {
         _sort: 'createdAt',
@@ -51,21 +54,29 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     })
 
     setTransactions(response.data)
-  }
+  }, [])
 
-  async function createTransaction(data: CreateTransactionInput) {
-    const { description, price, category, type } = data
+  /*
+    useCallback: Esse hook evita que a função passada para ele seja recriada em memória caso nenhuma informação sua ou que ela dependa tenha mudado.
+    O hook recebe como primeiro parâmetro a função em si e como segundo parâmetro o seu array de dependências.
+    Esse array tem a mesma funcionalidade vista no hook useEffect.
+  */
+  const createTransaction = useCallback(
+    async (data: CreateTransactionInput) => {
+      const { description, price, category, type } = data
 
-    const response = await api.post('transactions', {
-      description,
-      price,
-      category,
-      type,
-      createdAt: new Date(),
-    })
+      const response = await api.post('transactions', {
+        description,
+        price,
+        category,
+        type,
+        createdAt: new Date(),
+      })
 
-    setTransactions((prevState) => [response.data, ...prevState])
-  }
+      setTransactions((prevState) => [response.data, ...prevState])
+    },
+    [],
+  )
 
   useEffect(() => {
     /* fetch('http://localhost:3000/transactions')
