@@ -83,7 +83,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       .then(response => response.json())
       .then(data => console.log(data)) */
     fetchTransactions()
-  }, [])
+  }, [fetchTransactions]) // Corrigindo apenas a dependência do useEffect...
 
   return (
     <TransactionsContext.Provider
