@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContextSelector } from 'use-context-selector'
 
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 
@@ -15,8 +15,13 @@ import { Summary } from '../../components/Summary'
 import { SearchForm } from './components/SearchForm'
 
 export function Transactions() {
-  /* 6. Através do 'useContext' acessamos o contexto e temos acesso a suas informações */
-  const { transactions } = useContext(TransactionsContext)
+  /*
+    6. Através do 'useContext' acessamos o contexto e temos acesso a suas informações
+    Mesma modificação realizado no NewTransactionModal.
+  */
+  const transactions = useContextSelector(TransactionsContext, (context) => {
+    return context.transactions
+  })
 
   return (
     <div>

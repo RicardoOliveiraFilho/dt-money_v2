@@ -1,9 +1,9 @@
-import { useContext } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
+import { useContextSelector } from 'use-context-selector'
 
 import { TransactionsContext } from '../../contexts/TransactionsContext'
 
@@ -25,7 +25,18 @@ const NewTransactionFormSchema = zod.object({
 type NewTransactionFormInputs = zod.infer<typeof NewTransactionFormSchema>
 
 export function NewTransactionModal() {
-  const { createTransaction } = useContext(TransactionsContext)
+  /*
+   * Com o uso da 'use-context-selector' não utilizamos mais também o 'useContext' do React.
+   * Utilizamos o 'useContextSelector'. Além de passarmos o contexto, precisamos passar agora também uma função, como segundo parâmetro.
+   * Essa função recebe o nosso contexto como parâmetro, e ela deve retornar quais informações do contexto que queremos observar.
+   * Sendo apenas uma, basta um retorno simples. Se for mais de uma o retorno deve ser um objeto.
+   */
+  const createTransaction = useContextSelector(
+    TransactionsContext,
+    (context) => {
+      return context.createTransaction
+    },
+  )
 
   const {
     control /* Nos permite pegar a informação de elementos de formulários não nativos do html. Usado no 'Controller' do React Hook Form */,
